@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:u1_navegacion/constants.dart';
-import 'package:u1_navegacion/pages/tabs_page.dart';
+import 'package:u1_navegacion/pages/drawer_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
       ),
-      home: TabsPage(),
+      home: DrawerPage(),
     );
   }
 }
