@@ -74,4 +74,22 @@ class EquiposController extends Controller
         return $equipos;
     }
 
+    /**
+     * Lista equipos con:
+     * - lista de pilotos
+     * - puntaje (suma de los puntos de sus pilotos)
+     * - ordenados de mayor a menos (desc)
+     */
+    public function conPilotosPuntos()
+    {
+        $equipos = Equipo::withSum('pilotos as puntos', 'puntos')
+            ->orderBy('puntos','desc')
+            ->get()
+            ->load(['pilotos'=>function($query){
+                $query->select('apellido','equipo_id');
+            }]);
+
+        return $equipos;
+    }
+
 }

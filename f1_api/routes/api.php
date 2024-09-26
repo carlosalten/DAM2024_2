@@ -10,6 +10,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('equipos/comienzan-con-a', [EquiposController::class, 'equiposComienzanConA']);
+Route::get('equipos/con-pilotos-puntos', [EquiposController::class, 'conPilotosPuntos']);
 Route::get('equipos/con-cantidad-pilotos-puntos', [EquiposController::class, 'conCantidadPilotosPuntos']);
 Route::apiResource('equipos', EquiposController::class);
 

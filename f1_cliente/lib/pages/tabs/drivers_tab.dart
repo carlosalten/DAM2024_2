@@ -1,4 +1,3 @@
-import 'package:f1_cliente/data/datos.dart';
 import 'package:f1_cliente/services/pilotos_service.dart';
 import 'package:f1_cliente/widgets/driver_tile.dart';
 import 'package:flutter/material.dart';
