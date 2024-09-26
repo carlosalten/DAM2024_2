@@ -25,7 +25,7 @@ class PilotosController extends Controller
         * pero sin incluir el campo equipo_id (lo oculta)
         * en load() se coloca el modelo que se quiere incluir en la respuesta
         */
-        return Piloto::orderBy('apellido')->get()->load('equipo')->makeHidden(['equipo_id']);
+        return Piloto::orderBy('puntos','desc')->get()->load('equipo')->makeHidden(['equipo_id']);
     }
 
     /**
