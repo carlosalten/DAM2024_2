@@ -14,16 +14,16 @@ class EquiposSeeder extends Seeder
     public function run(): void
     {
         DB::table('equipos')->insert([
-            ['nombre' => 'Mercedes'],
-            ['nombre' => 'Red Bull'],
-            ['nombre' => 'Ferrari'],
-            ['nombre' => 'McLaren'],
-            ['nombre' => 'Aston Martin'],
-            ['nombre' => 'Alpine'],
-            ['nombre' => 'Racing Bulls'],
-            ['nombre' => 'Kick Sauber'],
-            ['nombre' => 'Haas'],
-            ['nombre' => 'Williams'],
+            ['nombre' => 'Mercedes', 'color' => '69F0AE'],
+            ['nombre' => 'Red Bull', 'color' => '001F6B'],
+            ['nombre' => 'Ferrari', 'color' => 'D32F2F'],
+            ['nombre' => 'McLaren', 'color' => 'FF9800'],
+            ['nombre' => 'Aston Martin', 'color' => '388E3C'],
+            ['nombre' => 'Alpine', 'color' => '7C4DFF'],
+            ['nombre' => 'Racing Bulls', 'color' => '2962FF'],
+            ['nombre' => 'Kick Sauber', 'color' => '00E676'],
+            ['nombre' => 'Haas', 'color' => '9E9E9E'],
+            ['nombre' => 'Williams', 'color' => '64B5F6'],
         ]);
     }
 }
