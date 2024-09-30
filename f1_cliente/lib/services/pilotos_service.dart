@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
@@ -17,5 +18,23 @@ class PilotosService {
       return json.decode(respuesta.body);
     }
     return [];
+  }
+
+  Future<LinkedHashMap<String, dynamic>> pilotosAgregar(String nombre, String apellido, int numero, int puntos, int equipo_id) async {
+    var respuesta = await http.post(
+      Uri.parse(this.apiUrl + '/pilotos'),
+      headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8', 'Accept': 'application/json'},
+      body: json.encode(
+        <String, dynamic>{
+          'nombre': nombre,
+          'apellido': apellido,
+          'numero': numero,
+          'puntos': puntos,
+          'equipo_id': equipo_id,
+        },
+      ),
+    );
+
+    return json.decode(respuesta.body);
   }
 }

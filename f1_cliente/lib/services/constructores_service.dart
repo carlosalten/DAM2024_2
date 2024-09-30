@@ -14,4 +14,14 @@ class ConstructoresService {
     }
     return [];
   }
+
+  //método para obtener lista de equipos ordenados por nombre
+  Future<List<dynamic>> equipos() async {
+    var respuesta = await http.get(Uri.parse('${this.apiUrl}/equipos'));
+
+    if (respuesta.statusCode == 200) {
+      return json.decode(respuesta.body);
+    }
+    return [];
+  }
 }
