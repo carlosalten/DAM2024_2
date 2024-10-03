@@ -37,4 +37,9 @@ class PilotosService {
 
     return json.decode(respuesta.body);
   }
+
+  Future<bool> borrarPiloto(int pilotoId) async {
+    var respuesta = await http.delete(Uri.parse(this.apiUrl + '/pilotos/' + pilotoId.toString()));
+    return respuesta.statusCode == 200;
+  }
 }

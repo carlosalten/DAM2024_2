@@ -24,4 +24,9 @@ class ConstructoresService {
     }
     return [];
   }
+
+  Future<bool> borrarEquipo(int equipoId) async {
+    var respuesta = await http.delete(Uri.parse(this.apiUrl + '/equipos/' + equipoId.toString()));
+    return respuesta.statusCode == 200;
+  }
 }

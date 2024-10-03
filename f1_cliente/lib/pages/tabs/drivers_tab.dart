@@ -1,8 +1,10 @@
 import 'package:f1_cliente/constants.dart';
 import 'package:f1_cliente/pages/tabs/driver_agregar_page.dart';
 import 'package:f1_cliente/services/pilotos_service.dart';
+import 'package:f1_cliente/utils/mensaje_util.dart';
 import 'package:f1_cliente/widgets/driver_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class DriversTab extends StatefulWidget {
@@ -55,13 +57,38 @@ class _DriversTabState extends State<DriversTab> {
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
                   var piloto = snapshot.data[index];
-                  return DriverTile(
-                    numero: piloto['numero'],
-                    nombre: piloto['nombre'],
-                    apellido: piloto['apellido'],
-                    equipo: piloto['equipo']['nombre'],
-                    color: int.parse('0xFF' + piloto['equipo']['color']),
-                    puntos: piloto['puntos'],
+                  return Slidable(
+                    //botonera que está a la derecha
+                    endActionPane: ActionPane(
+                      //establece la animación que ocurre al deslizar el dedo
+                      motion: ScrollMotion(),
+                      //botones que van en el ActionPane
+                      children: [
+                        SlidableAction(
+                          backgroundColor: Color(kPrimaryColor),
+                          foregroundColor: Colors.white,
+                          icon: MdiIcons.trashCan,
+                          label: 'Borrar',
+                          onPressed: (context) {
+                            //print('PILOTO: ${piloto['id']}');
+                            PilotosService().borrarPiloto(piloto['id']).then((borradoOk) {
+                              if (borradoOk) {
+                                setState(() {});
+                                MensajeUtil.mostrarSnackbar(context, 'Piloto Borrado :)');
+                              }
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    child: DriverTile(
+                      numero: piloto['numero'],
+                      nombre: piloto['nombre'],
+                      apellido: piloto['apellido'],
+                      equipo: piloto['equipo']['nombre'],
+                      color: int.parse('0xFF' + piloto['equipo']['color']),
+                      puntos: piloto['puntos'],
+                    ),
                   );
                 },
               );
