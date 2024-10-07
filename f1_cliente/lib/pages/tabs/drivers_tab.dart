@@ -85,8 +85,8 @@ class _DriversTabState extends State<DriversTab> {
                       numero: piloto['numero'],
                       nombre: piloto['nombre'],
                       apellido: piloto['apellido'],
-                      equipo: piloto['equipo']['nombre'],
-                      color: int.parse('0xFF' + piloto['equipo']['color']),
+                      equipo: piloto['equipo'] != null ? piloto['equipo']['nombre'] : 'Sin Equipo',
+                      color: piloto['equipo'] != null ? int.parse('0xFF' + piloto['equipo']['color']) : 0xFF333333,
                       puntos: piloto['puntos'],
                     ),
                   );
