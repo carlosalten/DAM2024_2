@@ -1,5 +1,6 @@
 import 'package:f1_cliente/constants.dart';
 import 'package:f1_cliente/pages/tabs/driver_agregar_page.dart';
+import 'package:f1_cliente/pages/tabs/driver_editar_page.dart';
 import 'package:f1_cliente/services/pilotos_service.dart';
 import 'package:f1_cliente/utils/mensaje_util.dart';
 import 'package:f1_cliente/widgets/driver_tile.dart';
@@ -60,6 +61,24 @@ class _DriversTabState extends State<DriversTab> {
                 itemBuilder: (context, index) {
                   var piloto = snapshot.data[index];
                   return Slidable(
+                    //botonera que está a la izquierda
+                    startActionPane: ActionPane(
+                      motion: ScrollMotion(),
+                      children: [
+                        SlidableAction(
+                          backgroundColor: Colors.purple,
+                          foregroundColor: Colors.white,
+                          icon: MdiIcons.pencil,
+                          label: 'Editar',
+                          onPressed: (context) {
+                            MaterialPageRoute route = MaterialPageRoute(
+                              builder: (context) => DriverEditarPage(pilotoId: piloto['id']),
+                            );
+                            Navigator.push(context, route);
+                          },
+                        ),
+                      ],
+                    ),
                     //botonera que está a la derecha
                     endActionPane: ActionPane(
                       //establece la animación que ocurre al deslizar el dedo

@@ -42,4 +42,9 @@ class PilotosService {
     var respuesta = await http.delete(Uri.parse(this.apiUrl + '/pilotos/' + pilotoId.toString()));
     return respuesta.statusCode == 200;
   }
+
+  Future<LinkedHashMap> getPiloto(int pilotoId) async {
+    var respuesta = await http.get(Uri.parse(this.apiUrl + '/pilotos/' + pilotoId.toString()));
+    return json.decode(respuesta.body);
+  }
 }
