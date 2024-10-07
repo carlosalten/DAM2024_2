@@ -15,9 +15,11 @@ class DriversTab extends StatefulWidget {
 }
 
 class _DriversTabState extends State<DriversTab> {
+  final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       floatingActionButton: FloatingActionButton(
         child: Icon(MdiIcons.plus),
         backgroundColor: Color(kPrimaryColor),
@@ -70,11 +72,17 @@ class _DriversTabState extends State<DriversTab> {
                           icon: MdiIcons.trashCan,
                           label: 'Borrar',
                           onPressed: (context) {
-                            //print('PILOTO: ${piloto['id']}');
-                            PilotosService().borrarPiloto(piloto['id']).then((borradoOk) {
-                              if (borradoOk) {
-                                setState(() {});
-                                MensajeUtil.mostrarSnackbar(context, 'Piloto Borrado :)');
+                            this._confirmBorrado(context).then((aceptaBorrar) {
+                              if (aceptaBorrar) {
+                                setState(() {
+                                  PilotosService().borrarPiloto(piloto['id']).then(
+                                    (borradoOk) {
+                                      if (borradoOk) {
+                                        MensajeUtil.mostrarSnackbar(scaffoldKey.currentContext!, 'Piloto Borrado :)');
+                                      }
+                                    },
+                                  );
+                                });
                               }
                             });
                           },
@@ -97,5 +105,28 @@ class _DriversTabState extends State<DriversTab> {
         ),
       ),
     );
+  }
+
+  //método para mostrar confirmación de borrado
+  Future<dynamic> _confirmBorrado(BuildContext context) {
+    return showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Confirmar Borrado'),
+            content: Text('Borrar Piloto?'),
+            actions: [
+              TextButton(
+                child: Text('CANCELAR'),
+                onPressed: () => Navigator.pop(context, false),
+              ),
+              ElevatedButton(
+                child: Text('ACEPTAR'),
+                onPressed: () => Navigator.pop(context, true),
+              ),
+            ],
+          );
+        });
   }
 }

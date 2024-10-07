@@ -70,6 +70,9 @@ class _DriverAgregarPageState extends State<DriverAgregarPage> {
                   }
                   //ya tengo los datos
                   var equipos = snapshot.data;
+                  if (equipoSeleccionado == 0) {
+                    equipoSeleccionado = equipos[0]['id'];
+                  }
                   return DropdownButtonFormField<int>(
                     value: equipos[0]['id'],
                     onChanged: (value) {
