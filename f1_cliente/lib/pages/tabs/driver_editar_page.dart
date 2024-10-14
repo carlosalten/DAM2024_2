@@ -1,7 +1,6 @@
 import 'package:f1_cliente/constants.dart';
 import 'package:f1_cliente/services/constructores_service.dart';
 import 'package:f1_cliente/services/pilotos_service.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class DriverEditarPage extends StatefulWidget {
@@ -18,7 +17,7 @@ class _DriverEditarPageState extends State<DriverEditarPage> {
   TextEditingController apellidoCtrl = TextEditingController();
   TextEditingController numeroCtrl = TextEditingController();
   TextEditingController puntosCtrl = TextEditingController();
-  int equipoSeleccionado = 0;
+  int? equipoSeleccionado;
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +35,12 @@ class _DriverEditarPageState extends State<DriverEditarPage> {
                 return Center(child: CircularProgressIndicator(color: Color(kPrimaryColor)));
               }
               var piloto = snapshot.data;
-              //print('PILOTO:${piloto}');
 
               nombreCtrl.text = piloto['nombre'];
               apellidoCtrl.text = piloto['apellido'];
               numeroCtrl.text = piloto['numero'].toString();
               puntosCtrl.text = piloto['puntos'].toString();
-              equipoSeleccionado = piloto['equipo_id'];
+              equipoSeleccionado = piloto['equipo'] != null ? piloto['equipo_id'] : null;
 
               return Form(
                 key: formKey,
@@ -88,9 +86,6 @@ class _DriverEditarPageState extends State<DriverEditarPage> {
                         }
                         //ya tengo los datos
                         var equipos = snapshot.data;
-                        // if (equipoSeleccionado == 0) {
-                        //   equipoSeleccionado = equipos[0]['id'];
-                        // }
                         return DropdownButtonFormField<int>(
                           value: equipoSeleccionado,
                           onChanged: (value) {
@@ -114,13 +109,7 @@ class _DriverEditarPageState extends State<DriverEditarPage> {
                         child: Text('Editar Piloto'),
                         onPressed: () {
                           //enviar datos a API
-                          PilotosService().pilotosAgregar(
-                            nombreCtrl.text.trim(),
-                            apellidoCtrl.text.trim(),
-                            int.tryParse(numeroCtrl.text.trim()) ?? 0,
-                            int.tryParse(puntosCtrl.text.trim()) ?? 0,
-                            equipoSeleccionado,
-                          );
+
                           //volver a página de pilotos
                           Navigator.pop(context);
                         },

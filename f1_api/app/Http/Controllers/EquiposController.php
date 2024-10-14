@@ -22,6 +22,7 @@ class EquiposController extends Controller
     {
         $equipo = new Equipo();
         $equipo->nombre = $request->nombre;
+        $equipo->color = $request->color;
         $equipo->save();
         return $equipo;
     }
@@ -35,17 +36,13 @@ class EquiposController extends Controller
         return $equipo;
     }
 
-    public function equiposComienzanConA()
-    {
-        return Equipo::where('nombre', 'like', 'A%')->get();
-    }
-
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Equipo $equipo)
     {
         $equipo->nombre = $request->nombre;
+        $equipo->color = $request->color;
         $equipo->save();
         return $equipo;
     }
@@ -83,11 +80,17 @@ class EquiposController extends Controller
     public function conPilotosPuntos()
     {
         $equipos = Equipo::withSum('pilotos as puntos', 'puntos')
-            ->orderBy('puntos','desc')
+            ->orderBy('puntos', 'desc')
             ->get()
-            ->load(['pilotos'=>function($query){
-                $query->select('apellido','equipo_id');
+            ->load(['pilotos' => function ($query) {
+                $query->select('id','nombre','apellido', 'numero', 'puntos', 'equipo_id');
             }]);
+
+        // Convertir 'puntos' a entero
+        $equipos = $equipos->map(function ($equipo) {
+            $equipo->puntos = (int) $equipo->puntos;
+            return $equipo;
+        });
 
         return $equipos;
     }

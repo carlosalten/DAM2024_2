@@ -61,7 +61,7 @@ class PilotosController extends Controller
      */
     public function show(Piloto $piloto)
     {
-        return $piloto;
+        return $piloto->load('equipo');
     }
 
     /**
@@ -73,6 +73,7 @@ class PilotosController extends Controller
         $piloto->apellido = $request->apellido; 
         $piloto->numero = $request->numero;
         $piloto->puntos = $request->puntos;
+        $piloto->equipo_id = $request->equipo_id;
         $piloto->save();
         return $piloto;
     }
@@ -85,13 +86,4 @@ class PilotosController extends Controller
         return $piloto->delete();
     }
 
-    /**
-     * Cambiar el equipo de un piloto.
-     */
-    public function cambiarEquipo(Request $request, Piloto $piloto)
-    {
-        $piloto->equipo_id = $request->equipo_id;
-        $piloto->save();
-        return $piloto;
-    }
 }
