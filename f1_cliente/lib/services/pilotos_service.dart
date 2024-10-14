@@ -47,4 +47,22 @@ class PilotosService {
     var respuesta = await http.get(Uri.parse(this.apiUrl + '/pilotos/' + pilotoId.toString()));
     return json.decode(respuesta.body);
   }
+
+  Future<LinkedHashMap<String, dynamic>> pilotosEditar(int pilotoId, String nombre, String apellido, int numero, int puntos, int equipo_id) async {
+    var respuesta = await http.put(
+      Uri.parse(this.apiUrl + '/pilotos/' + pilotoId.toString()),
+      headers: <String, String>{'Content-Type': 'application/json; charset=UTF-8', 'Accept': 'application/json'},
+      body: json.encode(
+        <String, dynamic>{
+          'nombre': nombre,
+          'apellido': apellido,
+          'numero': numero,
+          'puntos': puntos,
+          'equipo_id': equipo_id,
+        },
+      ),
+    );
+
+    return json.decode(respuesta.body);
+  }
 }

@@ -14,6 +14,9 @@ class _ConstructorAgregarPageState extends State<ConstructorAgregarPage> {
   TextEditingController nombreCtrl = TextEditingController();
   TextEditingController colorCtrl = TextEditingController();
 
+  String? nombreError;
+  String? colorError;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,14 +34,13 @@ class _ConstructorAgregarPageState extends State<ConstructorAgregarPage> {
                 controller: nombreCtrl,
                 decoration: InputDecoration(
                   labelText: 'Nombre',
+                  errorText: nombreError,
                 ),
               ),
               //color del equipo
               TextFormField(
                 controller: colorCtrl,
-                decoration: InputDecoration(
-                  labelText: 'Color',
-                ),
+                decoration: InputDecoration(labelText: 'Color', errorText: colorError),
                 keyboardType: TextInputType.number,
               ),
               //botón
@@ -48,13 +50,7 @@ class _ConstructorAgregarPageState extends State<ConstructorAgregarPage> {
                 child: ElevatedButton(
                   child: Text('Agregar Equipo'),
                   onPressed: () {
-                    ConstructoresService().equiposAgregar(
-                      nombreCtrl.text.trim(),
-                      colorCtrl.text.trim(),
-                    );
-
-                    //volver a página de pilotos
-                    Navigator.pop(context);
+                    _agregarEquipo();
                   },
                 ),
               ),
@@ -63,5 +59,25 @@ class _ConstructorAgregarPageState extends State<ConstructorAgregarPage> {
         ),
       ),
     );
+  }
+
+  void _agregarEquipo() async {
+    var respuesta = await ConstructoresService().equiposAgregar(
+      nombreCtrl.text.trim(),
+      colorCtrl.text.trim(),
+    );
+
+    if (respuesta['message'] != null) {
+      //hay errores de validacion
+      var errores = respuesta['errors'];
+      setState(() {
+        nombreError = errores['nombre'] != null ? errores['nombre'][0] : null;
+        colorError = errores['color'] != null ? errores['color'][0] : null;
+      });
+    } else {
+      //insertó datos en BD
+      //volver a página de pilotos
+      Navigator.pop(context);
+    }
   }
 }

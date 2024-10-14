@@ -74,7 +74,9 @@ class _DriversTabState extends State<DriversTab> {
                             MaterialPageRoute route = MaterialPageRoute(
                               builder: (context) => DriverEditarPage(pilotoId: piloto['id']),
                             );
-                            Navigator.push(context, route);
+                            Navigator.push(context, route).then((value) {
+                              setState(() {});
+                            });
                           },
                         ),
                       ],

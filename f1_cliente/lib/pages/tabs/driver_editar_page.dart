@@ -109,7 +109,14 @@ class _DriverEditarPageState extends State<DriverEditarPage> {
                         child: Text('Editar Piloto'),
                         onPressed: () {
                           //enviar datos a API
-
+                          PilotosService().pilotosEditar(
+                            widget.pilotoId,
+                            nombreCtrl.text.trim(),
+                            apellidoCtrl.text.trim(),
+                            int.parse(numeroCtrl.text.trim()),
+                            int.parse(puntosCtrl.text.trim()),
+                            equipoSeleccionado!,
+                          );
                           //volver a página de pilotos
                           Navigator.pop(context);
                         },
