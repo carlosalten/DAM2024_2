@@ -18,6 +18,12 @@ class _DriverAgregarPageState extends State<DriverAgregarPage> {
   TextEditingController puntosCtrl = TextEditingController();
   int equipoSeleccionado = 0;
 
+  String? nombreError;
+  String? apellidoError;
+  String? numeroError;
+  String? puntosError;
+  String? equipoError;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +41,7 @@ class _DriverAgregarPageState extends State<DriverAgregarPage> {
                 controller: nombreCtrl,
                 decoration: InputDecoration(
                   labelText: 'Nombre',
+                  errorText: nombreError,
                 ),
               ),
               //apellido del piloto
@@ -42,6 +49,7 @@ class _DriverAgregarPageState extends State<DriverAgregarPage> {
                 controller: apellidoCtrl,
                 decoration: InputDecoration(
                   labelText: 'Apellido',
+                  errorText: apellidoError,
                 ),
               ),
               //número del auto
@@ -49,6 +57,7 @@ class _DriverAgregarPageState extends State<DriverAgregarPage> {
                 controller: numeroCtrl,
                 decoration: InputDecoration(
                   labelText: 'Número Auto',
+                  errorText: numeroError,
                 ),
                 keyboardType: TextInputType.number,
               ),
@@ -57,6 +66,7 @@ class _DriverAgregarPageState extends State<DriverAgregarPage> {
                 controller: puntosCtrl,
                 decoration: InputDecoration(
                   labelText: 'Puntos',
+                  errorText: puntosError,
                 ),
                 keyboardType: TextInputType.number,
               ),
@@ -74,6 +84,10 @@ class _DriverAgregarPageState extends State<DriverAgregarPage> {
                     equipoSeleccionado = equipos[0]['id'];
                   }
                   return DropdownButtonFormField<int>(
+                    decoration: InputDecoration(
+                      labelText: 'Equipo',
+                      errorText: equipoError,
+                    ),
                     value: equipos[0]['id'],
                     onChanged: (value) {
                       equipoSeleccionado = value!;
@@ -95,16 +109,7 @@ class _DriverAgregarPageState extends State<DriverAgregarPage> {
                 child: ElevatedButton(
                   child: Text('Agregar Piloto'),
                   onPressed: () {
-                    //enviar datos a API
-                    PilotosService().pilotosAgregar(
-                      nombreCtrl.text.trim(),
-                      apellidoCtrl.text.trim(),
-                      int.tryParse(numeroCtrl.text.trim()) ?? 0,
-                      int.tryParse(puntosCtrl.text.trim()) ?? 0,
-                      equipoSeleccionado,
-                    );
-                    //volver a página de pilotos
-                    Navigator.pop(context);
+                    _agregarPiloto();
                   },
                 ),
               ),
@@ -113,5 +118,30 @@ class _DriverAgregarPageState extends State<DriverAgregarPage> {
         ),
       ),
     );
+  }
+
+  void _agregarPiloto() async {
+    //enviar datos a API
+    var respuesta = await PilotosService().pilotosAgregar(
+      nombreCtrl.text.trim(),
+      apellidoCtrl.text.trim(),
+      int.tryParse(numeroCtrl.text.trim()) ?? -1,
+      int.tryParse(puntosCtrl.text.trim()) ?? -1,
+      equipoSeleccionado,
+    );
+
+    if (respuesta['message'] != null) {
+      var errores = respuesta['errors'];
+      setState(() {
+        nombreError = errores['nombre'] != null ? errores['nombre'][0] : null;
+        apellidoError = errores['apellido'] != null ? errores['apellido'][0] : null;
+        numeroError = errores['numero'] != null ? errores['numero'][0] : null;
+        puntosError = errores['puntos'] != null ? errores['puntos'][0] : null;
+        equipoError = errores['equipo_id'] != null ? errores['equipo_id'][0] : null;
+      });
+    } else {
+      //volver a página de pilotos
+      Navigator.pop(context);
+    }
   }
 }

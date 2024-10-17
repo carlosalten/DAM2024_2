@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Piloto;
 use Illuminate\Http\Request;
+use App\Http\Requests\PilotoRequest;
 
 class PilotosController extends Controller
 {
@@ -44,7 +45,7 @@ class PilotosController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PilotoRequest $request)
     {
         $piloto = new Piloto();
         $piloto->nombre = $request->nombre;
